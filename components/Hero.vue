@@ -174,22 +174,22 @@ const onCoverFileChange = (e: any) => {
 const downloadImage = () => {
 
   const node = document.getElementById(`banner-${brand.value.bannerType}`) as HTMLElement
-  // domtoimage
-  //   .toBlob(document.getElementById(`banner-${brand.value.bannerType}`) as HTMLElement)
-  //   .then(function (blob: any) {
-  //     (window as any).saveAs(blob, "my-node.png");
-  //   });
-
-    domtoimage
-    .toPng(node)
-    .then(function (dataUrl: string) {
-        var img = new Image();
-        img.src = dataUrl;
-        document.body.appendChild(img);
-    })
-    .catch(function (error: any) {
-        console.error('oops, something went wrong!', error);
+  domtoimage
+    .toBlob(document.getElementById(`banner-${brand.value.bannerType}`) as HTMLElement)
+    .then(function (blob: any) {
+      (window as any).saveAs(blob, "my-node.png");
     });
+
+    // domtoimage
+    // .toPng(node)
+    // .then(function (dataUrl: string) {
+    //     var img = new Image();
+    //     img.src = dataUrl;
+    //     document.body.appendChild(img);
+    // })
+    // .catch(function (error: any) {
+    //     console.error('oops, something went wrong!', error);
+    // });
 };
 </script>
 <style>
