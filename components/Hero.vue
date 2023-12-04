@@ -91,22 +91,41 @@
           </div>
         </div>
         <!-- Preview -->
-        <div class="w-3/4">
-          <BannerOne v-if="brand.bannerType === 'type1'" :brand="brand" />
-          <BannerTwo v-else :brand="brand" />
+        <div class="w-3/4 space-y-3">
+          <BannerOne
+            v-if="brand.bannerType === 'one'"
+            id="banner-one"
+            :brand="brand"
+          />
+          <BannerTwo v-else :brand="brand" id="banner-two" />
+          <div class="flex justify-center">
+            <button
+              class="px-5 py-2 rounded-md bg-[#00dc82] text-white"
+              @click="downloadImage"
+            >
+              <Icon
+                name="carbon:download"
+                class="w-6 h-6 cursor-pointer"
+                @click="downloadImage"
+              />
+              Download
+            </button>
+          </div>
         </div>
       </div>
     </div>
   </section>
 </template>
 <script setup lang="ts">
+import domtoimage from "dom-to-image-more";
+
 const bannerTypes = [
   {
-    type: "type1",
+    type: "one",
     src: "banner_one.png",
   },
   {
-    type: "type2",
+    type: "two",
     src: "banner_two.png",
   },
 ];
@@ -121,7 +140,7 @@ type Brand = {
 };
 
 const brand: Ref<Brand> = ref({
-  bannerType: "type1",
+  bannerType: "one",
   name: "Nuxt Devtools",
   color: "#3898ec",
   description: "Unleash Nuxt Developer Experience",
@@ -150,6 +169,27 @@ const onCoverFileChange = (e: any) => {
   reader.onload = function (e) {
     brand.value.cover = e.target?.result;
   };
+};
+
+const downloadImage = () => {
+
+  const node = document.getElementById(`banner-${brand.value.bannerType}`) as HTMLElement
+  // domtoimage
+  //   .toBlob(document.getElementById(`banner-${brand.value.bannerType}`) as HTMLElement)
+  //   .then(function (blob: any) {
+  //     (window as any).saveAs(blob, "my-node.png");
+  //   });
+
+    domtoimage
+    .toPng(node)
+    .then(function (dataUrl: string) {
+        var img = new Image();
+        img.src = dataUrl;
+        document.body.appendChild(img);
+    })
+    .catch(function (error: any) {
+        console.error('oops, something went wrong!', error);
+    });
 };
 </script>
 <style>
